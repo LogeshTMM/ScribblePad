@@ -19,8 +19,7 @@ namespace ScribblePad {
    /// </summary>
    public partial class MainWindow : Window {
       Point mPoint = new ();
-      bool mIsDrawing, mSingleScribble = true, mMagicLine,
-         mLeftButtonPressed;
+      bool mIsDrawing, mMagicLine, mLeftButtonPressed, mSingleScribble = true, mMouseLeave = true;
       readonly Brush mStroke = Brushes.White;
       readonly Polyline polyLine = new ();
       readonly PointCollection pointCollection = new ();
@@ -39,6 +38,7 @@ namespace ScribblePad {
             mIsDrawing = false;
             pointCollection.Clear ();
          }
+         mMouseLeave = true;
       }
 
       private void MenuItem_Exit_Click (object sender, RoutedEventArgs e) {
@@ -46,7 +46,7 @@ namespace ScribblePad {
       }
 
       private void ScribblePad_MouseMove (object sender, MouseEventArgs e) {
-         if (mIsDrawing && sender is Canvas) {
+         if (mIsDrawing && sender is Canvas && mMouseLeave) {
             Line line = new () { X1 = mPoint.X, Y1 = mPoint.Y };
             mPoint = e.GetPosition (ScribblePad);
             line.X2 = mPoint.X;
@@ -54,13 +54,12 @@ namespace ScribblePad {
             line.Stroke = mStroke;
             line.StrokeThickness = 4;
             ScribblePad.Children.Add (line);
-
-         } else if (mLeftButtonPressed == true && mMagicLine && sender is Canvas) {
+         } else if (mLeftButtonPressed == true && mMagicLine && sender is Canvas && mMouseLeave) {
             pointCollection.Add (e.GetPosition (ScribblePad));
             polyLine.Points = pointCollection;
             polyLine.Stroke = mStroke;
             polyLine.StrokeThickness = 4;
-         }
+         } else return;
       }
 
       private void RadioButton_Click (object sender, RoutedEventArgs e) {
@@ -69,6 +68,10 @@ namespace ScribblePad {
             mMagicLine = false;
          }
       }
+
+      private void ScribblePad_MouseLeave (object sender, MouseEventArgs e) =>
+         mMouseLeave = false;
+
       private void MultiScribble_Click (object sender, RoutedEventArgs e) {
          if (MultiScribble.IsChecked == true) {
             mSingleScribble = false;

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScribblePad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Icon="/ScribblePad Icon_2.JPG">
+        Title="Scribble Pad" Height="450" Width="800" Icon="/ScribblePad Icon_2.JPG">
     <DockPanel >
-        <Menu Name="menu" DockPanel.Dock="Top"  >
+        <Menu Name="menu" DockPanel.Dock="Top">
             <MenuItem Header="_File" InputGestureText="Alt+F">
                 <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
             </MenuItem>
@@ -25,6 +25,7 @@
                 0 0" DockPanel.Dock="Bottom"
                 MouseLeftButtonDown="Canvas_MouseLeftButtonDown" 
                 MouseMove="ScribblePad_MouseMove" MouseLeftButtonUp="ScribblePad_MouseLeftButtonUp" 
+                MouseLeave="ScribblePad_MouseLeave" 
         />
     </DockPanel>
 </Window>
