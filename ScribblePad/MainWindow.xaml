@@ -1,0 +1,30 @@
+﻿<Window x:Class="ScribblePad.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScribblePad"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Icon="/ScribblePad Icon_2.JPG">
+    <DockPanel >
+        <Menu Name="menu" DockPanel.Dock="Top"  >
+            <MenuItem Header="_File" InputGestureText="Alt+F">
+                <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Edit" InputGestureText="ALt+E">
+                <MenuItem Header="Scripple">
+                    <RadioButton Name="SingleScribble" IsChecked="True" Click="RadioButton_Click" Content="Single Scripple" />
+                    <RadioButton Name="MultiScribble" Click="MultiScribble_Click"  Content="Multi Scripple"/>
+                    <RadioButton Name="MagicLine" Click="MagicLine_Click" Content="Magic Line"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="View"/>
+            <MenuItem Header="Help"/>
+        </Menu>
+        <Canvas Name="ScribblePad" Background="Black" Margin="0 3
+                0 0" DockPanel.Dock="Bottom"
+                MouseLeftButtonDown="Canvas_MouseLeftButtonDown" 
+                MouseMove="ScribblePad_MouseMove" MouseLeftButtonUp="ScribblePad_MouseLeftButtonUp" 
+        />
+    </DockPanel>
+</Window>
