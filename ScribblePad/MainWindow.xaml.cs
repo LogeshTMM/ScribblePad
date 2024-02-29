@@ -24,7 +24,6 @@ namespace ScribblePad {
       readonly Brush mStroke = Brushes.White;
       readonly Polyline polyLine = new ();
       readonly PointCollection pointCollection = new ();
-      private delegate void Operation (object obj, EventArgs eventArgs);
 
       public MainWindow () {
          InitializeComponent ();
