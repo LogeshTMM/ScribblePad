@@ -8,11 +8,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Circle.PNG" />
+    <None Remove="Clear.PNG" />
+    <None Remove="ConnectedLine.PNG" />
+    <None Remove="Ellipse.PNG" />
+    <None Remove="Line.PNG" />
+    <None Remove="MultiScribble.PNG" />
+    <None Remove="New.PNG" />
+    <None Remove="Open.PNG" />
+    <None Remove="origin.PNG" />
+    <None Remove="Rectangle.PNG" />
+    <None Remove="Redo.PNG" />
+    <None Remove="Save.PNG" />
     <None Remove="ScribblePad Icon_2.JPG" />
+    <None Remove="SingleScribble.PNG" />
+    <None Remove="undo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Circle.PNG" />
+    <Resource Include="Clear.PNG" />
+    <Resource Include="ConnectedLine.PNG" />
+    <Resource Include="Ellipse.PNG" />
+    <Resource Include="Line.PNG" />
+    <Resource Include="MultiScribble.PNG" />
+    <Resource Include="New.PNG" />
+    <Resource Include="Open.PNG" />
+    <Resource Include="origin.PNG" />
+    <Resource Include="Rectangle.PNG" />
+    <Resource Include="Redo.PNG" />
+    <Resource Include="Save.PNG" />
     <Resource Include="ScribblePad Icon_2.JPG" />
+    <Resource Include="SingleScribble.PNG" />
+    <Resource Include="undo.png" />
   </ItemGroup>
 
 </Project>

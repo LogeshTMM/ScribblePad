@@ -5,27 +5,313 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScribblePad"
         mc:Ignorable="d"
-        Title="Scribble Pad" Height="450" Width="800" Icon="/ScribblePad Icon_2.JPG">
-    <DockPanel >
-        <Menu Name="menu" DockPanel.Dock="Top">
-            <MenuItem Header="_File" InputGestureText="Alt+F">
-                <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
+        Title="Scribbly Pad" Height="500" Width="800" Icon="/ScribblePad Icon_2.JPG" Closing="Window_Closing">
+
+    <Window.Resources>
+        <Style TargetType="Rectangle">
+            <Setter Property="Width" Value="25"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" CanExecute="Open_CanExecute" Executed="Open_Executed"/>
+        <CommandBinding Command="ApplicationCommands.Save" CanExecute="Save_CanExecute" Executed="Save_Executed"/>
+        <CommandBinding Command="ApplicationCommands.Undo" CanExecute="Undo_CanExecute" Executed="Undo_Executed"/>
+        <CommandBinding Command="ApplicationCommands.Redo" CanExecute="Redo_CanExecute" Executed="Redo_Executed"/>
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu Name="menu" DockPanel.Dock="Top" GotFocus="MenuBar_GotFocus" >
+            <MenuItem Header="_File" GotFocus="MenuItem_GotFocus" InputGestureText="Alt+F">
+                <MenuItem Header="New" Click="New_Click" />
+                <MenuItem Header="Open" Command="ApplicationCommands.Open" ToolTip="Open a file"/>
+                <MenuItem Header="Save" Name="SaveMenu" Click="Save_Click"
+                          ToolTip="Save a file as .txt" ToolTipService.ShowOnDisabled="True"  />
+                <MenuItem Header="Save As" Name="SaveAsMenu" ToolTipService.ShowOnDisabled="True">
+                    <MenuItem.ToolTip>
+                        <ToolTip Content="Save a files as .txt or .bin" VerticalOffset="22" />
+                    </MenuItem.ToolTip>
+                    <MenuItem Header=".txt" Click="SaveAsTxt_Click"/>
+                    <MenuItem Header=".bin" Click="SaveAsBin_Click"/>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Exit" Click="FileMenuExit_Click" />
             </MenuItem>
-            <MenuItem Header="_Edit" InputGestureText="ALt+E">
-                <MenuItem Header="Scripple">
-                    <RadioButton Name="SingleScribble" IsChecked="True" Click="RadioButton_Click" Content="Single Scripple" />
-                    <RadioButton Name="MultiScribble" Click="MultiScribble_Click"  Content="Multi Scripple"/>
-                    <RadioButton Name="MagicLine" Click="MagicLine_Click" Content="Magic Line"/>
+            <MenuItem Header="_Edit" InputGestureText="ALt+E" >
+                <MenuItem Name="UndoMenu" Header="Undo" Command="ApplicationCommands.Undo"
+                         ToolTip="Undo" ToolTipService.ShowOnDisabled="True" />
+                <MenuItem Name="RedoMenu" Header="Redo" Command="ApplicationCommands.Redo" 
+                         ToolTip="Redo" ToolTipService.ShowOnDisabled="True" />
+                <MenuItem Header="Scribble">
+                    <MenuItem Name="SingleScribble" Click="SingleScribble_Click" Header="Single Scribble"
+                              ToolTipService.ShowDuration="6000">
+                        <MenuItem.ToolTip>
+                            <ToolTip HorizontalOffset="20" VerticalOffset="5">
+                                <TextBlock Foreground="Black">
+                                    Move the mouse to scribble by pressing the left button.<LineBreak/>
+                                    Simultaneously, the scribble will appear.<LineBreak/>
+                                    If you scribble again, the <Bold>previous object will be erased.</Bold>
+                                </TextBlock>
+                            </ToolTip>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                    <MenuItem Name="MultiScribble" Click="MultiScribble_Click"  Header="Multi Scribble"
+                              ToolTipService.ShowDuration="6000">
+                        <MenuItem.ToolTip>
+                            <ToolTip HorizontalOffset="20" VerticalOffset="5" >
+                                <TextBlock Foreground="Black">
+                                    As same as a single scribble, but if you scribble again, <LineBreak/>
+                                     <Bold>the previous object will not be erased.</Bold>
+                                </TextBlock>
+                            </ToolTip>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                    <MenuItem Name="MagicLine" Click="MagicLine_Click" Header="Magic Line" ToolTipService.ShowDuration="6000">
+                        <MenuItem.ToolTip>
+                            <ToolTip HorizontalOffset="20" VerticalOffset="5">
+                                <TextBlock Foreground="Black">
+                                    The same as a single scribble, but <Bold> the scribble will be<LineBreak/> 
+                                    visible when the left button is released.</Bold>
+                                </TextBlock>
+                            </ToolTip>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Stroke Thickness" >
+                    <MenuItem.ToolTip>
+                        <ToolTip VerticalOffset="22">
+                            <TextBlock Foreground="Black">
+                                Set the Stroke thickness between <Bold>1 to 10.</Bold>
+                            </TextBlock>
+                        </ToolTip>
+                    </MenuItem.ToolTip>
+                    <WrapPanel>
+                        <TextBlock Text="Set Thickness" FontWeight="DemiBold"/>
+                        <TextBlock Text="Value" Margin="40 0 00 0" FontWeight="DemiBold"/>
+                    </WrapPanel>
+                    <StackPanel Name="Thickness" Orientation="Horizontal">
+                        <Slider Name="SilderValue" Width="100" Value="{Binding Text, ElementName=TextToSliderValue,UpdateSourceTrigger=PropertyChanged}"  
+                            Minimum="1" Maximum="10" TickPlacement="BottomRight" TickFrequency="2" IsSnapToTickEnabled="True" MouseEnter="SilderValue_MouseEnter_1"  />
+                        <TextBox Name="TextToSliderValue" Margin="10 0 0 0" Text="1" Width="30" 
+                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </MenuItem>
+                <MenuItem Header="Stroke Colour" ToolTip="Set the stroke colour.">
+                    <TextBlock Text="Choose your colour" FontWeight="DemiBold"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Rectangle Fill="IndianRed" 
+                                   MouseLeftButtonDown="IndianRed_MouseLeftButtonDown" ToolTip= "Red" />
+                        <Rectangle Grid.Column="2" Fill="ForestGreen" 
+                                   MouseLeftButtonDown="ForestGreen_MouseLeftButtonDown" ToolTip="Green"/>
+                        <Rectangle Grid.Column="4" Fill="Yellow" 
+                                   MouseLeftButtonDown="Yellow_MouseLeftButtonDown" ToolTip="Yellow"/>
+
+                        <Rectangle Grid.Row="2" Grid.Column="0" Fill="LightSkyBlue" 
+                                   MouseLeftButtonDown="LightSkyBlue_MouseLeftButtonDown" ToolTip="SkyBlue"/>
+                        <Rectangle Grid.Row="2" Grid.Column="2" Fill="RosyBrown" 
+                                   MouseLeftButtonDown="RosyBrown_MouseLeftButtonDown" ToolTip="RosyBrown"/>
+                        <Rectangle Grid.Row="2" Grid.Column="4" Fill="BlueViolet" 
+                                   MouseLeftButtonDown="BlueVoilet_LeftButtonButtonDown" ToolTip="Voilet"/>
+
+                        <Rectangle Grid.Row="4" Grid.Column="0" Fill="Pink" 
+                                   MouseLeftButtonDown="Pink_MouseLeftButtonDown" ToolTip="Pink"/>
+                        <Rectangle Grid.Row="4" Grid.Column="2" Fill="Orange" 
+                                   MouseLeftButtonDown="Orange_MouseLeftButtonDown" ToolTip="Orange"/>
+                        <Rectangle Name="Changer" Grid.Row="4" Grid.Column="4" Fill="WhiteSmoke" 
+                                   MouseLeftButtonDown="WhiteSmoke_MouseLeftButtonDown" ToolTip="White"/>
+                    </Grid>
+                </MenuItem>
+                <MenuItem Header="Shapes">
+                    <MenuItem Header="Line">
+                        <MenuItem Header="Single Line" Click="SingleLine_Click">
+                            <MenuItem.ToolTip>
+                                <ToolTip HorizontalOffset="10">
+                                    <TextBlock Foreground="Black">
+                                        Move the mouse along with pressing the left button. When you the<LineBreak/>
+                                        released the left button simultaneously, the line will appear.<LineBreak/>
+                                        If you draw a line again, the <Bold>previous object will not be erased.</Bold>
+                                    </TextBlock>
+                                </ToolTip>
+                            </MenuItem.ToolTip>
+                        </MenuItem>
+                        <MenuItem Header="Connected Lines" Click="ConnectedLine_Click">
+                            <MenuItem.ToolTip>
+                                <ToolTip HorizontalOffset="10">
+                                    <TextBlock Foreground="Black">
+                                        At first, <Bold>two clicks</Bold> are needed to create a line.<LineBreak/>
+                                        After that a <Bold>single click is enough</Bold>.
+                                    </TextBlock>
+                                </ToolTip>
+                            </MenuItem.ToolTip>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Rectangle" Click="Rectangle_Click">
+                        <MenuItem.ToolTip>
+                            <ToolTip HorizontalOffset="10">
+                                <TextBlock Foreground="Black">
+                                    It's a <Bold>two point corner rectangle</Bold>. Click the <Bold>
+                                    left button of a mouse <LineBreak/>and drag to one corner to another diagonal corner
+                                    </Bold>  of the rectangle.<LineBreak/> when you released the button simultaneously, 
+                                    the rectangle will appear.
+                                </TextBlock>
+                            </ToolTip>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                    <Separator/>
+                    <WrapPanel>
+                        <Button Content="Circle" Width="Auto" Margin="0 0 2.5 0" Click="Circle_Click" ToolTip="{Binding ToolTip, ElementName=CircleButton}" />
+                        <TextBlock Text="D" VerticalAlignment="Center" Margin="5 0 2.5 0" />
+                        <TextBox Name="Circle" Width="30" HorizontalContentAlignment="Center" Height="20" 
+                                 Text ="{Binding Text,ElementName=CircleToolBar,UpdateSourceTrigger=PropertyChanged}"  KeyDown="Circle_KeyDown"
+                                 ToolTip="Enter the value of circle diameter."/>
+                    </WrapPanel>
+                    <Separator/>
+                    <WrapPanel>
+                        <Button Content="Ellipse" Margin="0 0 5 0" Click="Ellipse_Click" ToolTip="{Binding ToolTip,ElementName=EllipseButton}"/>
+                        <TextBlock Text="W" VerticalAlignment="Center" Margin="5 0 2.5 0"/>
+                        <TextBox Name="EWidth" Text="{Binding Text, ElementName=EWidthToolbar, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="30" HorizontalContentAlignment="Center" Margin="0 0 5 0"
+                                 ToolTip="Enter the value of ellipse width."/>
+                        <TextBlock Text="H" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                        <TextBox Name="EHeight" Text="{Binding Text, ElementName=EHeightToolBar, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="30" HorizontalContentAlignment="Center" KeyDown="Ellipse_KeyDown"
+                                 ToolTip="Enter the value of ellipse height."/>
+                    </WrapPanel>
+                    <Separator/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="View"/>
+            <MenuItem Header="_View" InputGestureText="Alt+V">
+                <MenuItem Header="Clear" Click="Clear_Click" ToolTip="Clear all the items on the screen and won't revive." />
+            </MenuItem>
             <MenuItem Header="Help"/>
         </Menu>
-        <Canvas Name="ScribblePad" Background="Black" Margin="0 3
-                0 0" DockPanel.Dock="Bottom"
-                MouseLeftButtonDown="Canvas_MouseLeftButtonDown" 
-                MouseMove="ScribblePad_MouseMove" MouseLeftButtonUp="ScribblePad_MouseLeftButtonUp" 
-                MouseLeave="ScribblePad_MouseLeave" 
-        />
+
+        <ToolBar DockPanel.Dock="Top"  Foreground="SaddleBrown" GotFocus="MenuBar_GotFocus" ToolBar.OverflowMode="Never">
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="New_Click">
+                <Image Source="/New.PNG" ToolTip="New"/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Open">
+                <Image Source="/Open.PNG" ToolTip="Open"/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Save">
+                <Image Source="/Save.PNG" ToolTip="Save (.txt)" ToolTipService.ShowOnDisabled="True"/>
+            </Button>
+            <Separator/>
+            <Button  Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Undo">
+                <Image Source="/undo.png" ToolTip="Undo" ToolTipService.ShowOnDisabled="True"/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Redo">
+                <Image Source="/Redo.PNG" ToolTip="Redo" ToolTipService.ShowOnDisabled="True"/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Clear_Click">
+                <Image Source="/Clear.PNG" ToolTip="Clear"/>
+            </Button>
+            <Separator/>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="SingleScribble_Click" ToolTip="Single Scribble">
+                <Image Source="/SingleScribble.PNG" ToolTip=""/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="MultiScribble_Click" ToolTip="Multi Scribble">
+                <Image Source="/MultiScribble.PNG" />
+            </Button>
+            <Separator/>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="SingleLine_Click">
+                <Image Source="/Line.PNG" ToolTip="Single Line"/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="ConnectedLine_Click" >
+                <Image Source="/ConnectedLine.PNG" ToolTip="Connected Line"/>
+            </Button>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Rectangle_Click">
+                <Image Source="/Rectangle.PNG" ToolTip="Recatngle"/>
+            </Button>
+            <Separator />
+            <Button Name="CircleButton" Width="20" Height="20" Margin="5 0 2.5 0" Click="Circle_Click">
+                <Button.ToolTip>
+                    <ToolTip Foreground="Black">
+                        Click the button and then place a circle on the screen by a click.
+                    </ToolTip>
+                </Button.ToolTip>
+                <Image Source="/Circle.PNG"/>
+            </Button>
+            <TextBlock Text="D" VerticalAlignment="Center"/>
+            <TextBox Name="CircleToolBar" Text="20" Width="30" Margin="5 0 2.5 0" ToolTip="Enter the diameter value of a circle" KeyDown="Circle_KeyDown"/>
+            <Separator/>
+            <Button Name="EllipseButton" Width="20" Height="20" Margin="5 0 2.5 0" Click="Ellipse_Click">
+                <Button.ToolTip>
+                    <ToolTip Foreground="Black">
+                        Click the button and then place an ellipse on the screen by a click.
+                    </ToolTip>
+                </Button.ToolTip>
+                <Image Source="/Ellipse.PNG"/>
+            </Button>
+            <TextBlock Text="W" Margin="5 0 2.5 0" VerticalAlignment="Center" />
+            <TextBox Name="EWidthToolbar" Text="100" Margin="5 0 2.5 0" VerticalAlignment="Center" KeyDown="Ellipse_KeyDown" ToolTip="Enter the width of an Ellipse."/>
+            <TextBlock Text="H" Margin="5 0 2.5 0" VerticalAlignment="Center" />
+            <TextBox Name="EHeightToolBar" Margin="5 0 2.5 0" Text="50" VerticalAlignment="Center" KeyDown="Ellipse_KeyDown" ToolTip="Enter the height of an Ellipse."/>
+            <Separator/>
+        </ToolBar>
+
+        <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Center">
+            <StatusBarItem>
+                <TextBlock Text="Status :" FontWeight="Bold"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="SetStatus" Text="Inactive" FontWeight="DemiBold" Foreground="Red"/>
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Text="Current Operation :" FontWeight="Bold"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="CurrentOperation" Text="Single Scribble" FontWeight="DemiBold" Foreground="Green"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="Co-ordinates" FontWeight="Bold"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="X :"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="XPosition" Text="0"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="Y :"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="YPosition" Text="0"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="Working Directory :" FontWeight="Bold" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="CurrentLocation" TextTrimming="CharacterEllipsis" ToolTip="Current location of the file" />
+            </StatusBarItem>
+        </StatusBar>
+
+        <Canvas Name="ScribblyRegion" Background="Black" Margin="0 1 0 0" DockPanel.Dock="Bottom"
+                MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="ScribblePad_MouseMove"
+                MouseLeftButtonUp="ScribblePad_MouseLeftButtonUp" MouseLeave="ScribblePad_MouseLeave">
+            <Canvas.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="EscapeButton" Header="Escape" Click="Escape_Click" IsEnabled="False"/>
+                </ContextMenu>
+            </Canvas.ContextMenu>
+            <Image Source="/origin.PNG" Height="69" Width="93" RenderTransformOrigin="0.395,1.552" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="328" Canvas.Left="-2" />
+        </Canvas>
     </DockPanel>
 </Window>
