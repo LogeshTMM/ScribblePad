@@ -928,6 +928,7 @@ namespace ScribblyPad {
             else {
                MessageBox.Show ("Invalid Format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                Circle.Text = "20";
+               mCircleDiameter = 20;
             }
          }
       }
