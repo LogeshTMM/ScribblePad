@@ -1,9 +1,9 @@
-﻿<Window x:Class="ScribblePad.MainWindow"
+﻿<Window x:Class="ScribblyPad.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ScribblePad"
+        xmlns:local="clr-namespace:ScribblyPad"
         mc:Ignorable="d"
         Title="Scribbly Pad" Height="500" Width="800" Icon="/ScribblePad Icon_2.JPG" Closing="Window_Closing">
 
@@ -80,7 +80,7 @@
                     <MenuItem.ToolTip>
                         <ToolTip VerticalOffset="22">
                             <TextBlock Foreground="Black">
-                                Set the Stroke thickness between <Bold>1 to 10.</Bold>
+                                Set the Stroke thickness between <Bold>1 to 10</Bold>
                             </TextBlock>
                         </ToolTip>
                     </MenuItem.ToolTip>
@@ -90,12 +90,17 @@
                     </WrapPanel>
                     <StackPanel Name="Thickness" Orientation="Horizontal">
                         <Slider Name="SilderValue" Width="100" Value="{Binding Text, ElementName=TextToSliderValue,UpdateSourceTrigger=PropertyChanged}"  
-                            Minimum="1" Maximum="10" TickPlacement="BottomRight" TickFrequency="2" IsSnapToTickEnabled="True" MouseEnter="SilderValue_MouseEnter_1"  />
-                        <TextBox Name="TextToSliderValue" Margin="10 0 0 0" Text="1" Width="30" 
-                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                            Minimum="1" Maximum="10" TickPlacement="BottomRight" TickFrequency="2" IsSnapToTickEnabled="True" />
+                        <TextBox Name="TextToSliderValue" Margin="10 0 0 0" Text="1" Width="30" ToolTip="Enter the value"
+                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" KeyDown="SetThickness_KeyDown"/>
                     </StackPanel>
                 </MenuItem>
-                <MenuItem Header="Stroke Colour" ToolTip="Set the stroke colour.">
+                <MenuItem Header="Stroke Colour">
+                    <MenuItem.ToolTip>
+                        <ToolTip>
+                            <TextBlock Foreground="Black" Text="Set the stroke colour" />
+                        </ToolTip>
+                    </MenuItem.ToolTip>
                     <TextBlock Text="Choose your colour" FontWeight="DemiBold"/>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -195,7 +200,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_View" InputGestureText="Alt+V">
-                <MenuItem Header="Clear" Click="Clear_Click" ToolTip="Clear all the items on the screen and won't revive." />
+                <MenuItem Header="Clear All" Click="Clear_Click" ToolTip="Clear all the items on the screen and won't revive." />
             </MenuItem>
             <MenuItem Header="Help"/>
         </Menu>
@@ -218,11 +223,11 @@
                 <Image Source="/Redo.PNG" ToolTip="Redo" ToolTipService.ShowOnDisabled="True"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Clear_Click">
-                <Image Source="/Clear.PNG" ToolTip="Clear"/>
+                <Image Source="/Clear.PNG" ToolTip="Clear All"/>
             </Button>
             <Separator/>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="SingleScribble_Click" ToolTip="Single Scribble">
-                <Image Source="/SingleScribble.PNG" ToolTip=""/>
+                <Image Source="/SingleScribble.PNG"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="MultiScribble_Click" ToolTip="Multi Scribble">
                 <Image Source="/MultiScribble.PNG" />
@@ -234,8 +239,8 @@
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="ConnectedLine_Click" >
                 <Image Source="/ConnectedLine.PNG" ToolTip="Connected Line"/>
             </Button>
-            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Rectangle_Click">
-                <Image Source="/Rectangle.PNG" ToolTip="Recatngle"/>
+            <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Rectangle_Click" ToolTip="Rectangle">
+                <Image Source="/Rectangle.PNG"/>
             </Button>
             <Separator />
             <Button Name="CircleButton" Width="20" Height="20" Margin="5 0 2.5 0" Click="Circle_Click">
@@ -311,7 +316,7 @@
                     <MenuItem Name="EscapeButton" Header="Escape" Click="Escape_Click" IsEnabled="False"/>
                 </ContextMenu>
             </Canvas.ContextMenu>
-            <Image Source="/origin.PNG" Height="69" Width="93" RenderTransformOrigin="0.395,1.552" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="328" Canvas.Left="-2" />
+            <Image Source="/origin.PNG" Height="69" Width="93" RenderTransformOrigin="0.395,1.552" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="326" Canvas.Left="-4" />
         </Canvas>
     </DockPanel>
 </Window>

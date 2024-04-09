@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 
-namespace ScribblePad {
+namespace ScribblyPad {
    /// <summary>
    /// Interaction logic for MainWindow.xaml
    /// </summary>
@@ -49,8 +49,9 @@ namespace ScribblePad {
             };
          } else if (mConnectedLine) {
             if (mIsFileSaved) mIsFileSaved = false;
-            if (mResetCline == 1) { // mResetCline = 1 indicates when you press escape context menu after that you want to draw cline.
-                                    // Then it will not start draw a line with the help of previous end point of cline.
+            if (mResetCline == 1) { // mResetCline = 1 indicates when you press escape context menu after that
+                                    // you want to draw cline again.Then it will not start draw a line with
+                                    // the help of previous end point of cline.
                mLine = new ();
                mPoint = e.GetPosition (ScribblyRegion);
                mResetCline = 0;
@@ -76,6 +77,7 @@ namespace ScribblePad {
          mMouseLeave = false;
       }
 
+      /// <summary>To add the information in ArrayList to identify the operation in scribblypad.</summary>
       private void ScribbleInfo () {
          mScribbleProperties.Add ("scribble");
          mScribbleProperties.Add (mSetStrokeThickness);
@@ -207,6 +209,8 @@ namespace ScribblePad {
       private void ScribblePad_MouseLeave (object sender, MouseEventArgs e) =>
          mMouseLeave = true;
 
+      /// <summary>To add the UI elements in the list of list UI elements.</summary>
+      /// <param name="element">It's an UI element.</param>
       private void AddUIElement (UIElement element) {
          mUIElements.Add (element);
          mUndoUIElements.Add (mUIElements);
@@ -922,7 +926,7 @@ namespace ScribblePad {
             CircleSetter ();
             if (double.TryParse (Circle.Text, out double diameter)) mCircleDiameter = diameter;
             else {
-               MessageBox.Show ("Invalid Format");
+               MessageBox.Show ("Invalid Format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                Circle.Text = "20";
             }
          }
@@ -946,12 +950,12 @@ namespace ScribblePad {
             EllipseSetter ();
             if (double.TryParse (EWidth.Text, out double width)) mEllipseWidth = width;
             else {
-               MessageBox.Show ("Invalid Format, So default value is set.");
+               MessageBox.Show ("Invalid Format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                EWidth.Text = "100";
             }
             if (double.TryParse (EHeight.Text, out double height)) mEllipseHeight = height;
             else {
-               MessageBox.Show ("Invaild Format, So default value is set.");
+               MessageBox.Show ("Invaild Format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                EHeight.Text = "50";
             }
          }
@@ -1063,16 +1067,21 @@ namespace ScribblePad {
       #endregion
 
       #region SET STROKE THICKNESS ----------------------------------
-      private void SilderValue_MouseEnter (object sender, MouseEventArgs e) {
-         bool isInteger = int.TryParse (TextToSliderValue.Text, out int value);
-         if (isInteger && value < 0) TextToSliderValue.Text = "1";
-         else if (isInteger && value > 10) TextToSliderValue.Text = "10";
-         else if (!isInteger) TextToSliderValue.Text = "1";
-      }
-
-      private void SilderValue_MouseEnter_1 (object sender, MouseEventArgs e) {
-         bool isInteger = int.TryParse (TextToSliderValue.Text, out int _);
-         if (!isInteger) TextToSliderValue.Text = "1";
+      private void SetThickness_KeyDown (object sender, KeyEventArgs e) {
+         if (e.Key == Key.Enter) {
+            bool result = int.TryParse (TextToSliderValue.Text, out int value);
+            if (result && value >= 1 && value <= 10)
+               TextToSliderValue.Text = $"{value}";
+            else if (result && value < 1) TextToSliderValue.Text = "1";
+            else if (result && value > 10) TextToSliderValue.Text = "10";
+            else {
+               MessageBox.Show ("Invalid Format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+               TextToSliderValue.Text = "1";
+            }
+         } else {
+            MessageBox.Show ("Invalid Format", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            TextToSliderValue.Text = "1";
+         }
       }
       #endregion
 

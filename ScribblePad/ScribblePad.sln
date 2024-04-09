@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScribblePad", "ScribblePad.csproj", "{89866927-C943-47E2-BE45-41694517A1D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScribblyPad", "ScribblyPad.csproj", "{89866927-C943-47E2-BE45-41694517A1D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
