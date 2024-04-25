@@ -26,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FieldsLibrary\FieldsLibrary.csproj" />
+    <ProjectReference Include="..\ShapeLibrary\ShapeLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Circle.PNG" />
     <Resource Include="Clear.PNG" />
     <Resource Include="ConnectedLine.PNG" />

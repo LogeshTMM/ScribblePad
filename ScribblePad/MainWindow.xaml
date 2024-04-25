@@ -1,11 +1,11 @@
-﻿<Window x:Class="ScribblyPad.MainWindow"
+﻿<Window x:Class="CadKit.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ScribblyPad"
+        xmlns:local="clr-namespace:CadKit"
         mc:Ignorable="d"
-        Title="Scribbly Pad" Height="500" Width="800" Icon="/ScribblePad Icon_2.JPG" Closing="Window_Closing">
+        Title="CAD KIT" Height="500" Width="800"  Closing="Window_Closing" Icon="/ScribblePad Icon_2.JPG" >
 
     <Window.Resources>
         <Style TargetType="Rectangle">
@@ -98,7 +98,7 @@
                 <MenuItem Header="Stroke Colour">
                     <MenuItem.ToolTip>
                         <ToolTip>
-                            <TextBlock Foreground="Black" Text="Set the stroke colour" />
+                            <TextBlock Foreground="Black" Text="Set the stroke colour"/>
                         </ToolTip>
                     </MenuItem.ToolTip>
                     <TextBlock Text="Choose your colour" FontWeight="DemiBold"/>
@@ -207,40 +207,40 @@
 
         <ToolBar DockPanel.Dock="Top"  Foreground="SaddleBrown" GotFocus="MenuBar_GotFocus" ToolBar.OverflowMode="Never">
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="New_Click">
-                <Image Source="/New.PNG" ToolTip="New"/>
+                <Image  ToolTip="New" Source="/New.PNG"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Open">
-                <Image Source="/Open.PNG" ToolTip="Open"/>
+                <Image  ToolTip="Open" Source="/Open.PNG"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Save">
-                <Image Source="/Save.PNG" ToolTip="Save (.txt)" ToolTipService.ShowOnDisabled="True"/>
+                <Image  ToolTip="Save (.txt)" ToolTipService.ShowOnDisabled="True" Source="/Save.PNG"/>
             </Button>
             <Separator/>
             <Button  Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Undo">
-                <Image Source="/undo.png" ToolTip="Undo" ToolTipService.ShowOnDisabled="True"/>
+                <Image  ToolTip="Undo" ToolTipService.ShowOnDisabled="True" Source="/undo.png"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Command="ApplicationCommands.Redo">
-                <Image Source="/Redo.PNG" ToolTip="Redo" ToolTipService.ShowOnDisabled="True"/>
+                <Image  ToolTip="Redo" ToolTipService.ShowOnDisabled="True" Source="/Redo.PNG"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Clear_Click">
-                <Image Source="/Clear.PNG" ToolTip="Clear All"/>
+                <Image  ToolTip="Clear All" Source="/Clear.PNG"/>
             </Button>
             <Separator/>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="SingleScribble_Click" ToolTip="Single Scribble">
-                <Image Source="/SingleScribble.PNG"/>
+                <Image Source="/SingleScribble.PNG" />
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="MultiScribble_Click" ToolTip="Multi Scribble">
-                <Image Source="/MultiScribble.PNG" />
+                <Image Source="/MultiScribble.PNG"  />
             </Button>
             <Separator/>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="SingleLine_Click">
-                <Image Source="/Line.PNG" ToolTip="Single Line"/>
+                <Image  ToolTip="Single Line" Source="/Line.PNG"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="ConnectedLine_Click" >
-                <Image Source="/ConnectedLine.PNG" ToolTip="Connected Line"/>
+                <Image  ToolTip="Connected Line" Source="/ConnectedLine.PNG"/>
             </Button>
             <Button Width="20" Height="20" Margin="5 0 2.5 0" Click="Rectangle_Click" ToolTip="Rectangle">
-                <Image Source="/Rectangle.PNG"/>
+                <Image Source="/Rectangle.PNG" />
             </Button>
             <Separator />
             <Button Name="CircleButton" Width="20" Height="20" Margin="5 0 2.5 0" Click="Circle_Click">
@@ -249,7 +249,7 @@
                         Click the button and then place a circle on the screen by a click.
                     </ToolTip>
                 </Button.ToolTip>
-                <Image Source="/Circle.PNG"/>
+                <Image Source="/Circle.PNG" />
             </Button>
             <TextBlock Text="D" VerticalAlignment="Center"/>
             <TextBox Name="CircleToolBar" Text="20" Width="30" Margin="5 0 2.5 0" ToolTip="Enter the diameter value of a circle" KeyDown="Circle_KeyDown"/>
@@ -260,7 +260,7 @@
                         Click the button and then place an ellipse on the screen by a click.
                     </ToolTip>
                 </Button.ToolTip>
-                <Image Source="/Ellipse.PNG"/>
+                <Image Source="/Ellipse.PNG" />
             </Button>
             <TextBlock Text="W" Margin="5 0 2.5 0" VerticalAlignment="Center" />
             <TextBox Name="EWidthToolbar" Text="100" Margin="5 0 2.5 0" VerticalAlignment="Center" KeyDown="Ellipse_KeyDown" ToolTip="Enter the width of an Ellipse."/>
@@ -308,7 +308,7 @@
             </StatusBarItem>
         </StatusBar>
 
-        <Canvas Name="ScribblyRegion" Background="Black" Margin="0 1 0 0" DockPanel.Dock="Bottom"
+        <Canvas Name="CadKitRegion" Background="Black" Margin="0 1 0 0" DockPanel.Dock="Bottom"
                 MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="ScribblePad_MouseMove"
                 MouseLeftButtonUp="ScribblePad_MouseLeftButtonUp" MouseLeave="ScribblePad_MouseLeave">
             <Canvas.ContextMenu>
@@ -316,7 +316,6 @@
                     <MenuItem Name="EscapeButton" Header="Escape" Click="Escape_Click" IsEnabled="False"/>
                 </ContextMenu>
             </Canvas.ContextMenu>
-            <Image Source="/origin.PNG" Height="69" Width="93" RenderTransformOrigin="0.395,1.552" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="326" Canvas.Left="-4" />
         </Canvas>
     </DockPanel>
 </Window>
